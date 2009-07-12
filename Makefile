@@ -6,7 +6,7 @@ all:
 	@echo "  upload ... uploads the webapp to the google app engine"
 
 local:
-	dev_appserver.py .
+	python2.5 `which dev_appserver.py` .
 
 test:
 	python test_app.py localhost:8080
