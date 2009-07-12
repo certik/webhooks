@@ -1,3 +1,6 @@
+import base64
+import urllib
+import pprint
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 
@@ -12,15 +15,10 @@ class MainPage(webapp.RequestHandler):
         logging.info("get has been called")
 
     def post(self):
-        payload = simplejson.loads(self.request.body)
-        logging.info("-"*40)
-        logging.info(str(payload))
-        for revision in payload["revisions"]:
-            logging.info("Project %s, revision %s contains %s paths",
-                payload["project_name"],
-                revision["revision"],
-                revision["path_count"])
-        logging.info("-"*40)
+        payload = self.request.get("payload")
+        payload = urllib.unquote(payload)
+        payload = simplejson.loads(payload)
+        logging.info("-"*40 + "\n" + pprint.pformat(payload) + "\n" + "-"*40)
 
 application = webapp.WSGIApplication(
                                      [('/', MainPage)],
