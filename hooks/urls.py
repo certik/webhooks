@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import *
 
-urlpatterns = patterns('webhooks.hooks.views',
+urlpatterns = patterns('hooks.views',
     (r'^$', 'index'),
 )

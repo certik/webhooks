@@ -6,8 +6,8 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('',
     # Example:
-    (r'^$', 'webhooks.hooks.views.index'),
-    (r'^hooks/', include('webhooks.hooks.urls')),
+    (r'^$', 'hooks.views.index'),
+    (r'^hooks/', include('hooks.urls')),
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
     # to INSTALLED_APPS to enable admin documentation:
