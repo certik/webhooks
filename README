@@ -1,0 +1,21 @@
+Installation
+------------
+
+Install the app engine SDK and put "dev_appserver.py" in your PATH.
+
+To test the app locally, do:
+
+make local
+
+To test the app locally, do:
+
+make local
+make test
+
+to install it to the app engine, do:
+
+make upload
+
+And to test the live app, do:
+
+make test-remote
