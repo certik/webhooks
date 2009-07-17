@@ -56,6 +56,9 @@ sys.path = [PARENT_DIR,] + sys.path
 
 # Try to import the appengine code from the system path.
 try:
+  # this is important, otherwise python will remember the wrong path to
+  # "google":
+  raise ImportError()
   from google.appengine.api import apiproxy_stub_map
 except ImportError, e:
   # Not on the system path. Build a list of alternative paths where it may be.
