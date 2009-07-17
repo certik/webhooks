@@ -9,7 +9,7 @@ local:
 	python2.5 `which dev_appserver.py` .
 
 test:
-	python test_app.py localhost:8080
+	python test_app.py localhost:8000
 
 test-remote:
 	python test_app.py sympy2.appspot.com

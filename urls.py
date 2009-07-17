@@ -6,7 +6,7 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('',
     # Example:
-    (r'^$', 'webhooks.views.index'),
+    (r'^$', 'webhooks.hooks.views.index'),
     (r'^hooks/', include('webhooks.hooks.urls')),
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
