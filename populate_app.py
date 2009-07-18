@@ -67,9 +67,45 @@ d2 = {
   "after": "de8251ff97ee194a289832576287d6f8ad74e3d0",
   "ref": "refs/heads/master"
 }
+d3 = {u'after': u'6f4f8e4ec110c23eb2f2fb48363eb19af8f73ac1',
+ u'before': u'bb8a111ad149cf775b9ac400391bb4e3759f25db',
+ u'commits': [{u'added': [],
+               u'author': {u'email': u'ondrej@certik.cz',
+                           u'name': u'Ondrej Certik'},
+               u'id': u'be1b010afc5a35d624dd2e53733f86ef6268bd9c',
+               u'message': u'Fixes several typos in the docstrings\n\nLike indentation problems and similar.\n\nSigned-off-by: Ondrej Certik <ondrej@certik.cz>\nSigned-off-by: Aaron Meurer <asmeurer@gmail.com>',
+               u'modified': [u'sympy/simplify/simplify.py'],
+               u'removed': [],
+               u'timestamp': u'2009-07-11T19:02:21-07:00',
+               u'url': u'http://github.com/certik/sympy/commit/be1b010afc5a35d624dd2e53733f86ef6268bd9c'},
+              {u'added': [],
+               u'author': {u'email': u'ondrej@certik.cz',
+                           u'name': u'Ondrej Certik'},
+               u'id': u'6f4f8e4ec110c23eb2f2fb48363eb19af8f73ac1',
+               u'message': u'SymPy logo: use a transparent background',
+               u'modified': [u'doc/src/_static/sympylogo.png'],
+               u'removed': [],
+               u'timestamp': u'2009-07-12T09:39:06-07:00',
+               u'url': u'http://github.com/certik/sympy/commit/6f4f8e4ec110c23eb2f2fb48363eb19af8f73ac1'}],
+ u'ref': u'refs/heads/master',
+ u'repository': {u'description': u"Ondrej's sympy development repo",
+                 u'fork': False,
+                 u'forks': 3,
+                 u'homepage': u'',
+                 u'name': u'sympy',
+                 u'open_issues': 0,
+                 u'owner': {u'email': u'ondrej@certik.cz',
+                            u'name': u'certik'},
+                 u'private': False,
+                 u'url': u'http://github.com/certik/sympy',
+                 u'watchers': 8}}
+
 data = json.dumps(d1)
 data = "payload=%s" % urllib.quote(data)
 os.system('curl -d "%s" %s' % (data, url))
 data = json.dumps(d2)
+data = "payload=%s" % urllib.quote(data)
+os.system('curl -d "%s" %s' % (data, url))
+data = json.dumps(d3)
 data = "payload=%s" % urllib.quote(data)
 os.system('curl -d "%s" %s' % (data, url))
