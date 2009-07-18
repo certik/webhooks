@@ -7,4 +7,5 @@ urlpatterns = patterns('hooks.views',
     (r'^repos/$', 'repos'),
     (r'^repos/(?P<repo>\S+)/$', 'repo'),
     (r'^worker/authors/$', 'worker_authors'),
+    (r'^worker/user_email/$', 'worker_email'),
 )

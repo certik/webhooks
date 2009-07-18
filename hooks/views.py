@@ -112,7 +112,11 @@ def worker_authors(request):
             u = User(name=author, email="None")
             u.save()
             task = taskqueue.Task(url="/hooks/worker/user_email/",
-                    params={'user': u.key(), 'commit': m[u.name]})
+                    params={'user': u.key(),
+                        'r_user_id': r.owner.name,
+                        'r_repository': r.name,
+                        'r_sha': m[u.name]
+                        })
             queue.add(task)
         q = Author.gql("WHERE user = :1 AND repo = :2", u, r)
         a = q.get()
@@ -120,4 +124,24 @@ def worker_authors(request):
             a = Author(repo=r, user=u)
             a.save()
     logging.info("  done.")
+    return HttpResponse("OK\n")
+
+@log_exception
+def worker_email(request):
+    u = User.get(db.Key(request.POST["user"]))
+    r_user_id = request.POST["r_user_id"]
+    r_repository = request.POST["r_repository"]
+    r_sha = request.POST["r_sha"]
+    logging.info("processing email for: %s" % u.name)
+    base_url = "http://github.com/api/v2/json/commits/show/%s/%s" % (r_user_id, r_repository)
+    url = base_url + "/%s" % r_sha
+    logging.info("  downloading commit from: %s" % url)
+    s = urllib2.urlopen(url).read()
+    data = simplejson.loads(s, encoding="latin-1")
+    author = data["commit"]["author"]
+    logging.info(author)
+    assert author["name"] == u.name
+    u.email = author["email"]
+    u.put()
+    logging.info("done")
     return HttpResponse("OK\n")
