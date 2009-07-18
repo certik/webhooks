@@ -6,7 +6,7 @@ all:
 	@echo "  upload ... uploads the webapp to the google app engine"
 
 local:
-	python2.5 manage.py runserver
+	./manage.py runserver
 
 test:
 	./manage.py test hooks
@@ -16,4 +16,4 @@ test-remote:
 	python test_app.py sympy2.appspot.com
 
 upload:
-	python2.5 .google_appengine/appcfg.py update .
+	./manage.py update
