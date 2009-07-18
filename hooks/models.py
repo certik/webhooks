@@ -12,3 +12,7 @@ class Repository(BaseModel):
 class RepoUpdate(BaseModel):
     update = db.TextProperty()
     repo = db.ReferenceProperty(Repository)
+
+class Author(BaseModel):
+    user = db.ReferenceProperty(User)
+    repo = db.ReferenceProperty(Repository)

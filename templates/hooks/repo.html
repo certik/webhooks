@@ -7,6 +7,19 @@
 Name: {{ repo.name }}<br/>
 Owner: <a href="/hooks/users/{{ repo.owner.key }}/">{{ repo.owner.name }}</a>
 
+<h2>Authors</h2>
+<p>
+List of all authors, that committed patches to this repository:
+<ul>
+{% for author in authors %}
+<li>
+<a href="/hooks/users/{{ author.key }}/">{{ author.name }}</a>
+({{ author.email }})
+</li>
+{% endfor %}
+</ul>
+</p>
+
 <h2>Updates</h2>
 <p>
 A list of JSON updates that we received for this repository:

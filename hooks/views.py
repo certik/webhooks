@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.utils import simplejson
 
-from models import User, Repository, RepoUpdate
+from models import User, Repository, RepoUpdate, Author
 from google.appengine.ext import db
 
 def index(request):
@@ -55,5 +55,6 @@ def repos(request):
 def repo(request, repo):
     r = Repository.get(db.Key(repo))
     updates = RepoUpdate.gql("WHERE repo = :1", r)
+    authors = Author.gql("WHERE repo = :1", r)
     return render_to_response("hooks/repo.html", {'repo': r,
-        'updates': updates})
+        'updates': updates, 'authors': authors})
