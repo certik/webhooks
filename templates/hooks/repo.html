@@ -13,8 +13,8 @@ List of all authors, that committed patches to this repository:
 <ul>
 {% for author in authors %}
 <li>
-<a href="/hooks/users/{{ author.key }}/">{{ author.name }}</a>
-({{ author.email }})
+<a href="/hooks/users/{{ author.user.key }}/">{{ author.user.name }}</a>
+({{ author.user.email }})
 </li>
 {% endfor %}
 </ul>

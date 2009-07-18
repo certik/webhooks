@@ -69,16 +69,21 @@ def repo(request, repo):
 def worker_authors(request):
     r = Repository.get(db.Key(request.POST["repo"]))
     logging.info("processing repository: %s" % r.name)
-    s = urllib2.urlopen("http://github.com/certik/sympy/network_meta").read()
+    base_url = "http://github.com/%s/%s" % (r.owner.name, r.name)
+    url = base_url + "/network_meta"
+    logging.info("  downloading network_meta from: %s" % url)
+    s = urllib2.urlopen(url).read()
     logging.info("  network_meta loaded")
-    data = simplejson.loads(s)
+    try:
+        data = simplejson.loads(s)
+    except ValueError:
+        return HttpResponse("Probably bad repo, skipping.\n")
     logging.info("  network_meta parsed")
     dates = data["dates"]
     nethash = data["nethash"]
-    base = "http://github.com/certik/sympy"
-    url = "%s/network_data_chunk?nethash=%s&start=0&end=%d" % (base, nethash,
-            len(dates)-1)
-    logging.info("  downloading commits...")
+    url = "%s/network_data_chunk?nethash=%s&start=0&end=%d" % (base_url,
+            nethash, len(dates)-1)
+    logging.info("  downloading commits from: %s" % url)
     s = urllib2.urlopen(url).read()
     logging.info("  parsing commits...")
     data = simplejson.loads(s, encoding="latin-1")
