@@ -1,4 +1,30 @@
-Hooks index page<p/>
+{% extends "hooks/base.html" %}
 
-<a href="hooks/users">users</a><br/>
-<a href="hooks/repos">repositories</a>
+{% block title %}Repositories main page{% endblock %}
+
+{% block content %}
+
+<h1>About</h1>
+
+<p>
+This is a web application that provides an alternative interface to the
+repositories hosted at <a href="http://github.com/">GitHub</a>.</p>
+<p>
+It uses GitHub web API to access information about the repositories and then
+caches it in the database (everything runs on the
+<a href="http://code.google.com/appengine/">Google App Engine</a>), so it's
+very fast.
+</p>
+<p>
+This application is opensource (BSD licensed), source code is at
+<a href="http://github.com/certik/webhooks">http://github.com/certik/webhooks</a>
+</p>
+
+<h1>Add a repository</h1>
+To add a new repository, set up a post-receive hook on your repository as
+explained in the
+<a href="http://github.com/guides/post-receive-hooks">Post-Receive Guide</a>
+at GitHub. This is important, so that we are kept updated about all changes to
+the repository.
+
+{% endblock %}

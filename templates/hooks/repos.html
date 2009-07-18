@@ -1,7 +1,14 @@
-Repositories
+{% extends "hooks/base.html" %}
 
+{% block title %}Repositories{% endblock %}
+
+{% block content %}
+
+<h2>Repositories</h2>
 <ul>
 {% for repo in repos_list %}
-    <li>{{ repo.name }}</li>
+<li>{{ repo.name }} (owner: <a href="/hooks/users/{{ repo.owner.key }}/">{{ repo.owner.name }}</a>)</li>
 {% endfor %}
 </ul>
+
+{% endblock %}

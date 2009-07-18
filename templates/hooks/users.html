@@ -1,7 +1,14 @@
-Users
+{% extends "hooks/base.html" %}
 
+{% block title %}Users{% endblock %}
+
+{% block content %}
+
+<h2>Users list</h2>
 <ul>
 {% for user in users_list %}
 <li><a href="{{ user.key }}">{{ user.name }}</a> ({{ user.email }})</li>
 {% endfor %}
 </ul>
+
+{% endblock %}
