@@ -24,8 +24,12 @@ def index(request):
         if u is None:
             u = User(name=owner["name"], email=owner["email"])
             u.save()
-        r = Repository(name=repository["name"], owner=u)
-        r.save()
+        q = Repository.gql("WHERE name = :1 AND owner = :2",
+                repository["name"], u)
+        r = q.get()
+        if r is None:
+            r = Repository(name=repository["name"], owner=u)
+            r.save()
         return HttpResponse("OK\n")
 
 def users(request):
