@@ -23,4 +23,5 @@ def index(request):
         return HttpResponse("OK\n")
 
 def users(request):
-    return render_to_response("hooks/users.html")
+    l = [{"name": "ok", "email": "em"}, {"name": "ok2"}]
+    return render_to_response("hooks/users.html", {'users_list': l})

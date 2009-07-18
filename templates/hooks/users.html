@@ -1,1 +1,7 @@
 Users
+
+<ul>
+{% for user in users_list %}
+    <li>{{ user.name }} ({{ user.email }})</li>
+{% endfor %}
+</ul>
