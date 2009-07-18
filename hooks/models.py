@@ -1,10 +1,10 @@
 from appengine_django.models import BaseModel
-from django.db import models
+from google.appengine.ext import db
 
 class User(BaseModel):
-    name = models.CharField(max_length=100)
-    email = models.CharField(max_length=100)
+    name = db.StringProperty()
+    email = db.StringProperty()
 
 class Repository(BaseModel):
-    name = models.CharField(max_length=100)
-    owner = models.ForeignKey(User)
+    name = db.StringProperty()
+    owner = db.ReferenceProperty(User)

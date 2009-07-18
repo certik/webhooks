@@ -24,5 +24,4 @@ def index(request):
 
 def users(request):
     l = User.objects.all()
-    #l = [{"name": "ok", "email": "em"}, {"name": "ok2"}]
     return render_to_response("hooks/users.html", {'users_list': l})
