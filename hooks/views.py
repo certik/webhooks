@@ -149,7 +149,7 @@ def worker_email(request):
     data = simplejson.loads(s, encoding="latin-1")
     author = data["commit"]["author"]
     logging.info(author)
-    assert author["name"] == u.name
+    #assert author["name"] == u.name
     u.email = author["email"]
     u.put()
     logging.info("done")
