@@ -1,4 +1,7 @@
+import traceback
+import sys
 import urllib
+import urllib2
 import pprint
 import logging
 import hashlib
@@ -35,7 +38,7 @@ def index(request):
             r.save()
         u = RepoUpdate(repo=r, update=pprint.pformat(payload))
         u.save()
-        taskqueue.add(url="/worker/authors", params={'repo': r.key()})
+        taskqueue.add(url="/hooks/worker/authors/", params={'repo': r.key()})
         return HttpResponse("OK\n")
 
 def users(request):
@@ -61,3 +64,35 @@ def repo(request, repo):
     authors = Author.gql("WHERE repo = :1", r)
     return render_to_response("hooks/repo.html", {'repo': r,
         'updates': updates, 'authors': authors})
+
+def worker_authors(request):
+    try:
+        r = Repository.get(db.Key(request.POST["repo"]))
+        logging.info("processing repository: %s" % r.name)
+        s = urllib2.urlopen("http://github.com/certik/sympy/network_meta").read()
+        logging.info("  network_meta loaded")
+        data = simplejson.loads(s)
+        logging.info("  network_meta parsed")
+        dates = data["dates"]
+        nethash = data["nethash"]
+        base = "http://github.com/certik/sympy"
+        url = "%s/network_data_chunk?nethash=%s&start=0&end=%d" % (base, nethash,
+                len(dates)-1)
+        logging.info("  downloading commits...")
+        s = urllib2.urlopen(url).read()
+        logging.info("  parsing commits...")
+        data = simplejson.loads(s, encoding="latin-1")
+        logging.info("  processing authors...")
+        commits = data["commits"]
+        authors = [x["author"] for x in commits]
+        authors = list(set(authors))
+        authors.sort()
+        logging.info("  done.")
+    except:
+        logging.info("Exception raised during the task processing")
+        etype, value, tb = sys.exc_info()
+        s = "".join(traceback.format_exception(etype, value, tb))
+        logging.info(s)
+        logging.info("-"*40)
+        raise
+    return HttpResponse("OK\n")
