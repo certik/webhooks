@@ -1,7 +1,12 @@
 Installation
 ------------
 
-Install the app engine SDK and put "dev_appserver.py" in your PATH.
+Install the app engine SDK and link to it by:
+
+ln -s /home/ondrej/ext/google_appengine/ .google_appengine
+
+(Or let manage.py do it automatically by fixing the link at the top of the
+file)
 
 To test the app locally, do:
 
