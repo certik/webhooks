@@ -9,9 +9,14 @@ print len(dates)
 print nethash
 base = "http://github.com/certik/sympy"
 url = "%s/network_data_chunk?nethash=%s&start=0&end=%d" % (base, nethash,
-        len(dates)-10)
+        len(dates)-1)
+print "downloading..."
 s = urllib2.urlopen(url).read()
-#print s
-data = simplejson.loads(s)
-#print data["commits"]
-print len(data["commits"])
+print "   done."
+data = simplejson.loads(s, encoding="latin-1")
+commits = data["commits"]
+authors = [x["author"] for x in commits]
+authors = list(set(authors))
+authors.sort()
+print authors
+print len(authors)
