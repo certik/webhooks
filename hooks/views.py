@@ -19,8 +19,11 @@ def index(request):
         #logging.info("-"*40 + "\n" + pprint.pformat(payload) + "\n" + "-"*40)
         repository = payload["repository"]
         owner = repository["owner"]
-        u = User(name=owner["name"], email=owner["email"])
-        u.save()
+        q = User.gql("WHERE email = :1", owner["email"])
+        u = q.get()
+        if u is None:
+            u = User(name=owner["name"], email=owner["email"])
+            u.save()
         r = Repository(name=repository["name"], owner=u)
         r.save()
         return HttpResponse("OK\n")

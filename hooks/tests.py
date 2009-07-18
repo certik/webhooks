@@ -134,3 +134,21 @@ class HookTest(TestCase):
         assert users_list[0].email == "some4@at.com"
         assert users_list[1].name == "defunkt"
         assert users_list[1].email == "chris@ozmm.org"
+
+    def test_users2(self):
+        data = simplejson.dumps(d1)
+        response = self.client.post('/', {"payload": data})
+        assert response.status_code == 200
+        assert response.content == "OK\n"
+
+        data = simplejson.dumps(d1)
+        response = self.client.post('/', {"payload": data})
+        assert response.status_code == 200
+        assert response.content == "OK\n"
+
+        response = self.client.get('/hooks/users/')
+        assert response.status_code == 200
+        users_list = response.context["users_list"]
+        assert len(list(users_list)) == 1
+        assert users_list[0].name == "user4"
+        assert users_list[0].email == "some4@at.com"
