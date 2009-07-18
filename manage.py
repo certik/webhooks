@@ -1,4 +1,5 @@
-#!/usr/bin/python
+#! /usr/bin/python2.5
+
 import os
 root_dir = os.path.dirname(os.path.abspath(__file__))
 link = root_dir + "/.google_appengine"
