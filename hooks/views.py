@@ -38,7 +38,10 @@ def index(request):
             r.save()
         u = RepoUpdate(repo=r, update=pprint.pformat(payload))
         u.save()
-        taskqueue.add(url="/hooks/worker/authors/", params={'repo': r.key()})
+        queue = taskqueue.Queue("github")
+        task = taskqueue.Task(url="/hooks/worker/authors/",
+                params={'repo': r.key()})
+        queue.add(task)
         return HttpResponse("OK\n")
 
 def users(request):
@@ -72,11 +75,16 @@ def worker_authors(request):
     base_url = "http://github.com/%s/%s" % (r.owner.name, r.name)
     url = base_url + "/network_meta"
     logging.info("  downloading network_meta from: %s" % url)
-    s = urllib2.urlopen(url).read()
+    try:
+        s = urllib2.urlopen(url).read()
+    except urllib2.HTTPError:
+        logging.info("Probably bad repo, skipping.")
+        return HttpResponse("Probably bad repo, skipping.\n")
     logging.info("  network_meta loaded")
     try:
         data = simplejson.loads(s)
     except ValueError:
+        logging.info("Probably bad repo, skipping.")
         return HttpResponse("Probably bad repo, skipping.\n")
     logging.info("  network_meta parsed")
     dates = data["dates"]
@@ -89,15 +97,23 @@ def worker_authors(request):
     data = simplejson.loads(s, encoding="latin-1")
     logging.info("  processing authors...")
     commits = data["commits"]
-    authors = [x["author"] for x in commits]
+    m = [(x["author"], x["id"]) for x in commits]
+    m = dict(m)
+    logging.info(m)
+    authors = m.keys()
     authors = list(set(authors))
     authors.sort()
+    logging.info(authors)
+    queue = taskqueue.Queue("github")
     for author in authors:
         q = User.gql("WHERE name = :1", author)
         u = q.get()
         if u is None:
             u = User(name=author, email="None")
             u.save()
+            task = taskqueue.Task(url="/hooks/worker/user_email/",
+                    params={'user': u.key(), 'commit': m[u.name]})
+            queue.add(task)
         q = Author.gql("WHERE user = :1 AND repo = :2", u, r)
         a = q.get()
         if a is None:
