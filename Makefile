@@ -9,7 +9,7 @@ local:
 	./manage.py runserver
 
 test:
-	./manage.py test hooks
+	WEBHOOKS_TESTS=yes ./manage.py test hooks
 
 test-remote:
 	python test_app.py sympy2.appspot.com

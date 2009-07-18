@@ -1,3 +1,4 @@
+import os
 import urllib
 import urllib2
 import pprint
@@ -14,6 +15,14 @@ from google.appengine.ext import db
 from google.appengine.api.labs import taskqueue
 
 from utils import log_exception
+
+def get_github_queue():
+    if "WEBHOOKS_TESTS" in os.environ and \
+            os.environ['WEBHOOKS_TESTS'] == "yes":
+        queue = taskqueue.Queue("default")
+    else:
+        queue = taskqueue.Queue("github")
+    return queue
 
 def index(request):
     if request.method == 'GET':
@@ -38,7 +47,7 @@ def index(request):
             r.save()
         u = RepoUpdate(repo=r, update=pprint.pformat(payload))
         u.save()
-        queue = taskqueue.Queue("github")
+        queue = get_github_queue()
         task = taskqueue.Task(url="/hooks/worker/authors/",
                 params={'repo': r.key()})
         queue.add(task)
@@ -104,7 +113,7 @@ def worker_authors(request):
     authors = list(set(authors))
     authors.sort()
     logging.info(authors)
-    queue = taskqueue.Queue("github")
+    queue = get_github_queue()
     for author in authors:
         q = User.gql("WHERE name = :1", author)
         u = q.get()
