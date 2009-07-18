@@ -10,6 +10,8 @@ from django.utils import simplejson
 from models import User, Repository, RepoUpdate, Author
 from google.appengine.ext import db
 
+from google.appengine.api.labs import taskqueue
+
 def index(request):
     if request.method == 'GET':
         return render_to_response("hooks/index.html")
@@ -33,6 +35,7 @@ def index(request):
             r.save()
         u = RepoUpdate(repo=r, update=pprint.pformat(payload))
         u.save()
+        taskqueue.add(url="/worker/authors", params={'repo': r.key()})
         return HttpResponse("OK\n")
 
 def users(request):
