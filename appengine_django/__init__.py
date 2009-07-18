@@ -58,8 +58,11 @@ sys.path = [PARENT_DIR,] + sys.path
 try:
   # this is important, otherwise python will remember the wrong path to
   # "google":
-  raise ImportError()
-  from google.appengine.api import apiproxy_stub_map
+  if "SERVER_SOFTWARE" in os.environ and \
+          os.environ['SERVER_SOFTWARE'].find("Google") != -1:
+      from google.appengine.api import apiproxy_stub_map
+  else:
+      raise ImportError()
 except ImportError, e:
   # Not on the system path. Build a list of alternative paths where it may be.
   # First look within the project for a local copy, then look for where the Mac
