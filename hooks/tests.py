@@ -12,7 +12,28 @@ class SimpleTest(TestCase):
 
 class HookTest(TestCase):
     def test_hook(self):
-        d = {23: 23, "ok": 2}
+        d = {
+                "commits": [{
+                    "id": "984375209487abe",
+                    "author": {
+                        "name": "user1",
+                        "email": "some@at.com"
+                    }
+                }, {
+                    "id": "984375aaf209487abe",
+                    "author": {
+                        "name": "user3",
+                        "email": "some3@at.com"
+                    }
+                }],
+                "repository": {
+                    "name": "testing_repo",
+                    "owner": {
+                        "name": "user3",
+                        "email": "some3@at.com"
+                    }
+                 }
+            }
         data = simplejson.dumps(d)
         response = self.client.post('/', {"payload": data})
         assert response.status_code == 200
