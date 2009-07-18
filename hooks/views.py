@@ -27,3 +27,7 @@ def index(request):
 def users(request):
     l = User.objects.all()
     return render_to_response("hooks/users.html", {'users_list': l})
+
+def repos(request):
+    l = Repository.objects.all()
+    return render_to_response("hooks/repos.html", {'repos_list': l})

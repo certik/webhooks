@@ -88,6 +88,12 @@ class HookTest(TestCase):
         assert users_list[0].name == "user4"
         assert users_list[0].email == "some4@at.com"
 
+        response = self.client.get('/hooks/repos/')
+        assert response.status_code == 200
+        repos_list = response.context["repos_list"]
+        assert len(list(repos_list)) == 1
+        assert repos_list[0].name == "testing_repo"
+
     def test_hook2(self):
         data = simplejson.dumps(d2)
         response = self.client.post('/', {"payload": data})
