@@ -8,3 +8,7 @@ class User(BaseModel):
 class Repository(BaseModel):
     name = db.StringProperty()
     owner = db.ReferenceProperty(User)
+
+class RepoUpdate(BaseModel):
+    update = db.TextProperty()
+    repo = db.ReferenceProperty(Repository)

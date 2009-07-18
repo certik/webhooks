@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.utils import simplejson
 
-from models import User, Repository
+from models import User, Repository, RepoUpdate
 from google.appengine.ext import db
 
 def index(request):
@@ -30,6 +30,8 @@ def index(request):
         if r is None:
             r = Repository(name=repository["name"], owner=u)
             r.save()
+        u = RepoUpdate(repo=r, update=pprint.pformat(payload))
+        u.save()
         return HttpResponse("OK\n")
 
 def users(request):
@@ -46,4 +48,6 @@ def repos(request):
 
 def repo(request, repo):
     r = Repository.get(db.Key(repo))
-    return render_to_response("hooks/repo.html", {'repo': r})
+    updates = RepoUpdate.gql("WHERE repo = :1", r)
+    return render_to_response("hooks/repo.html", {'repo': r,
+        'updates': updates})
