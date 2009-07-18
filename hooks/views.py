@@ -87,6 +87,17 @@ def worker_authors(request):
         authors = [x["author"] for x in commits]
         authors = list(set(authors))
         authors.sort()
+        for author in authors:
+            q = User.gql("WHERE name = :1", author)
+            u = q.get()
+            if u is None:
+                u = User(name=author, email="None")
+                u.save()
+            q = Author.gql("WHERE user = :1 AND repo = :2", u, r)
+            a = q.get()
+            if a is None:
+                a = Author(repo=r, user=u)
+                a.save()
         logging.info("  done.")
     except:
         logging.info("Exception raised during the task processing")
