@@ -1,6 +1,7 @@
 import urllib
 import pprint
 import logging
+import hashlib
 
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
@@ -40,7 +41,12 @@ def users(request):
 
 def user(request, user):
     u = User.get(db.Key(user))
-    return render_to_response("hooks/user.html", {'user': u})
+    gravatar_id = hashlib.md5(u.email).hexdigest()
+    default = "http://github.com/images/gravatars/gravatar-40.png"
+    gravatar_url = "http://www.gravatar.com/avatar/%s?d=%s" % \
+            (gravatar_id, urllib.quote(default, safe=""))
+    return render_to_response("hooks/user.html", {'user': u,
+        'gravatar_url': gravatar_url})
 
 def repos(request):
     l = Repository.objects.all()

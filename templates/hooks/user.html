@@ -5,6 +5,8 @@
 {% block content %}
 
 Name: {{ user.name }}<br/>
-Email: {{ user.email }}
+Email: {{ user.email }}<br/>
+<img src="{{ gravatar_url }}">
+
 
 {% endblock %}
