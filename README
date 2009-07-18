@@ -9,7 +9,6 @@ make local
 
 To test the app locally, do:
 
-make local
 make test
 
 to install it to the app engine, do:
