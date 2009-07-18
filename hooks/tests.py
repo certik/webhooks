@@ -171,7 +171,7 @@ class HookTest(TestCase):
         assert users_list[0].name == "defunkt"
         assert users_list[0].email == "chris@ozmm.org"
 
-    def _test_repos1(self):
+    def test_repos1(self):
         data = simplejson.dumps(d1)
         response = self.client.post('/', {"payload": data})
         assert response.status_code == 200
@@ -189,7 +189,6 @@ class HookTest(TestCase):
         assert repos_list[0].name == "testing_repo"
         assert repos_list[0].owner.name == "user4"
         assert repos_list[0].owner.email == "some4@at.com"
-        print repos_list[1].name
-        assert repos_list[1].name == "testing_repo"
-        assert repos_list[1].name == "defunkt"
-        assert repos_list[1].email == "chris@ozmm.org"
+        assert repos_list[1].name == "github"
+        assert repos_list[1].owner.name == "defunkt"
+        assert repos_list[1].owner.email == "chris@ozmm.org"
