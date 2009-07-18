@@ -15,7 +15,7 @@ def index(request):
         payload = request.POST["payload"]
         payload = urllib.unquote(payload)
         payload = simplejson.loads(payload)
-        logging.info("-"*40 + "\n" + pprint.pformat(payload) + "\n" + "-"*40)
+        #logging.info("-"*40 + "\n" + pprint.pformat(payload) + "\n" + "-"*40)
         repository = payload["repository"]
         owner = repository["owner"]
         u = User(name=owner["name"], email=owner["email"])

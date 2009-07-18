@@ -29,8 +29,8 @@ class HookTest(TestCase):
                 "repository": {
                     "name": "testing_repo",
                     "owner": {
-                        "name": "user3",
-                        "email": "some3@at.com"
+                        "name": "user4",
+                        "email": "some4@at.com"
                     }
                  }
             }
@@ -38,3 +38,10 @@ class HookTest(TestCase):
         response = self.client.post('/', {"payload": data})
         assert response.status_code == 200
         assert response.content == "OK\n"
+
+        response = self.client.get('/hooks/users/')
+        assert response.status_code == 200
+        users_list = response.context["users_list"]
+        assert len(list(users_list)) == 1
+        assert users_list[0].name == "user4"
+        assert users_list[0].email == "some4@at.com"
