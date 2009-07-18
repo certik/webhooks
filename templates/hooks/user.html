@@ -1,3 +1,10 @@
-User<br/>
+{% extends "hooks/base.html" %}
 
-{{ user.name }} ({{ user.email }})
+{% block title %}User{% endblock %}
+
+{% block content %}
+
+Name: {{ user.name }}<br/>
+Email: {{ user.email }}
+
+{% endblock %}
