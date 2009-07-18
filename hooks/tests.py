@@ -65,6 +65,29 @@ d2 = {
   "ref": "refs/heads/master"
 }
 
+d3 = {
+    "commits": [{
+        "id": "984375209487abe",
+        "author": {
+            "name": "user1",
+            "email": "some@at.com"
+        }
+    }, {
+        "id": "984375aaf209487abe",
+        "author": {
+            "name": "user3",
+            "email": "some3@at.com"
+        }
+    }],
+    "repository": {
+        "name": "testing_repo",
+        "owner": {
+            "name": "user4",
+            "email": "some5@at.com"
+        }
+     }
+}
+
 class SimpleTest(TestCase):
     def test_hooks(self):
         response = self.client.get('/hooks/')
@@ -211,3 +234,25 @@ class HookTest(TestCase):
         assert repos_list[0].name == "testing_repo"
         assert repos_list[0].owner.name == "user4"
         assert repos_list[0].owner.email == "some4@at.com"
+
+    def test_repos3(self):
+        data = simplejson.dumps(d1)
+        response = self.client.post('/', {"payload": data})
+        assert response.status_code == 200
+        assert response.content == "OK\n"
+
+        data = simplejson.dumps(d3)
+        response = self.client.post('/', {"payload": data})
+        assert response.status_code == 200
+        assert response.content == "OK\n"
+
+        response = self.client.get('/hooks/repos/')
+        assert response.status_code == 200
+        repos_list = response.context["repos_list"]
+        assert len(list(repos_list)) == 2
+        assert repos_list[0].name == "testing_repo"
+        assert repos_list[0].owner.name == "user4"
+        assert repos_list[0].owner.email == "some4@at.com"
+        assert repos_list[1].name == "testing_repo"
+        assert repos_list[1].owner.name == "user4"
+        assert repos_list[1].owner.email == "some5@at.com"
