@@ -21,3 +21,6 @@ def index(request):
         u = User(name=owner["name"], email=owner["email"])
         u.save()
         return HttpResponse("OK\n")
+
+def users(request):
+    return render_to_response("hooks/users.html")
