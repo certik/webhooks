@@ -74,8 +74,17 @@ def repo(request, repo):
     r = Repository.get(db.Key(repo))
     updates = RepoUpdate.gql("WHERE repo = :1", r)
     authors = Author.gql("WHERE repo = :1", r)
+    a = []
+    default = "http://github.com/images/gravatars/gravatar-40.png"
+    for author in authors:
+        u = author.user
+        gravatar_id = hashlib.md5(u.email).hexdigest()
+        gravatar_url = "http://www.gravatar.com/avatar/%s?d=%s" % \
+                (gravatar_id, urllib.quote(default, safe=""))
+        a.append({"name": u.name, "email": u.email, "key": u.key(),
+            "gravatar_url": gravatar_url})
     return render_to_response("hooks/repo.html", {'repo': r,
-        'updates': updates, 'authors': authors})
+        'updates': updates, 'authors': a})
 
 @log_exception
 def worker_authors(request):
