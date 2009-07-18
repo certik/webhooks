@@ -18,4 +18,4 @@ upload:
 	./manage.py update
 
 populate:
-	python test_app.py localhost:8000
+	python populate_app.py localhost:8000
