@@ -93,6 +93,8 @@ class HookTest(TestCase):
         repos_list = response.context["repos_list"]
         assert len(list(repos_list)) == 1
         assert repos_list[0].name == "testing_repo"
+        assert repos_list[0].owner.name == "user4"
+        assert repos_list[0].owner.email == "some4@at.com"
 
     def test_hook2(self):
         data = simplejson.dumps(d2)
