@@ -1,4 +1,10 @@
 #!/usr/bin/python
+import os
+root_dir = os.path.dirname(os.path.abspath(__file__))
+link = root_dir + "/.google_appengine"
+if not os.path.exists(link):
+    os.symlink("/home/ondrej/ext/google_appengine/", link)
+
 from appengine_django import InstallAppengineHelperForDjango
 InstallAppengineHelperForDjango()
 
