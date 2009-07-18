@@ -7,6 +7,7 @@ from django.shortcuts import render_to_response
 from django.utils import simplejson
 
 from models import User, Repository
+from google.appengine.ext import db
 
 def index(request):
     if request.method == 'GET':
@@ -27,6 +28,10 @@ def index(request):
 def users(request):
     l = User.objects.all()
     return render_to_response("hooks/users.html", {'users_list': l})
+
+def user(request, user):
+    u = User.get(db.Key(user))
+    return render_to_response("hooks/user.html", {'user': u})
 
 def repos(request):
     l = Repository.objects.all()

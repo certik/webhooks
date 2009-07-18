@@ -87,6 +87,12 @@ class HookTest(TestCase):
         assert len(list(users_list)) == 1
         assert users_list[0].name == "user4"
         assert users_list[0].email == "some4@at.com"
+        key = users_list[0].key()
+        response = self.client.get('/hooks/users/%s/' % key)
+        assert response.status_code == 200
+        user = response.context["user"]
+        assert user.name == "user4"
+        assert user.email == "some4@at.com"
 
         response = self.client.get('/hooks/repos/')
         assert response.status_code == 200
