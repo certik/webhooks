@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.utils import simplejson
 
-from models import User
+from models import User, Repository
 
 def index(request):
     if request.method == 'GET':
@@ -20,6 +20,8 @@ def index(request):
         owner = repository["owner"]
         u = User(name=owner["name"], email=owner["email"])
         u.save()
+        r = Repository(name=repository["name"], owner=u)
+        r.save()
         return HttpResponse("OK\n")
 
 def users(request):
