@@ -10,10 +10,12 @@ local:
 
 test:
 	./manage.py test hooks
-	@#python test_app.py localhost:8000
 
 test-remote:
 	python test_app.py sympy2.appspot.com
 
 upload:
 	./manage.py update
+
+populate:
+	python test_app.py localhost:8000

@@ -23,5 +23,6 @@ def index(request):
         return HttpResponse("OK\n")
 
 def users(request):
-    l = [{"name": "ok", "email": "em"}, {"name": "ok2"}]
+    l = User.objects.all()
+    #l = [{"name": "ok", "email": "em"}, {"name": "ok2"}]
     return render_to_response("hooks/users.html", {'users_list': l})
