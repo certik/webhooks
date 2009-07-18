@@ -7,7 +7,8 @@
 <h2>Repositories</h2>
 <ul>
 {% for repo in repos_list %}
-<li>{{ repo.name }} (owner: <a href="/hooks/users/{{ repo.owner.key }}/">{{ repo.owner.name }}</a>)</li>
+<li><a href="/hooks/repos/{{ repo.key }}/">{{ repo.name }}</a> (owner:
+<a href="/hooks/users/{{ repo.owner.key }}/">{{ repo.owner.name }}</a>)</li>
 {% endfor %}
 </ul>
 

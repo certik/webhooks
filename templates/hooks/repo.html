@@ -1,0 +1,10 @@
+{% extends "hooks/base.html" %}
+
+{% block title %}Repository{% endblock %}
+
+{% block content %}
+
+Name: {{ repo.name }}<br/>
+Owner: <a href="/hooks/users/{{ repo.owner.key }}/">{{ repo.owner.name }}</a>
+
+{% endblock %}

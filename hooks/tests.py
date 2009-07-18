@@ -124,6 +124,13 @@ class HookTest(TestCase):
         assert repos_list[0].name == "testing_repo"
         assert repos_list[0].owner.name == "user4"
         assert repos_list[0].owner.email == "some4@at.com"
+        key = repos_list[0].key()
+        response = self.client.get('/hooks/repos/%s/' % key)
+        assert response.status_code == 200
+        repo = response.context["repo"]
+        assert repo.name == "testing_repo"
+        assert repo.owner.name == "user4"
+        assert repo.owner.email == "some4@at.com"
 
     def test_hook2(self):
         data = simplejson.dumps(d2)

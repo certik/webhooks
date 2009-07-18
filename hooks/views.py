@@ -43,3 +43,7 @@ def user(request, user):
 def repos(request):
     l = Repository.objects.all()
     return render_to_response("hooks/repos.html", {'repos_list': l})
+
+def repo(request, repo):
+    r = Repository.get(db.Key(repo))
+    return render_to_response("hooks/repo.html", {'repo': r})
