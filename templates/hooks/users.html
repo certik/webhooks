@@ -4,13 +4,30 @@
 
 {% block content %}
 
-<h2>Users list</h2>
-<ul>
+<h2 class="title">Users list</h2>
+<div class="inner">
+    <table class="table">
+        <tr>
+            <th class="first">Name</th>
+            <th>Email</th>
+            <th class="last">Gravatar</th>
+        </tr>
+
 {% for user in users_list %}
-<li><a href="{{ user.key }}">{{ user.name }}</a> ({{ user.email }})
-<img src="{{ user.gravatar_url }}">
-</li>
+        <tr class="{% cycle odd,even %}">
+            <td>
+                <a href="{{ user.key }}">{{ user.name }}</a>
+            </td>
+            <td>
+                {{ user.email }}
+            </td>
+            <td>
+                <img src="{{ user.gravatar_url }}">
+            </td>
+        </tr>
 {% endfor %}
-</ul>
+    </table>
+</div>
+
 
 {% endblock %}
