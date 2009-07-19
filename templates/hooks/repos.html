@@ -31,12 +31,25 @@
 
 {% block content %}
 
-<h2>Repositories</h2>
-<ul>
+<h2 class="title">Repositories</h2>
+<div class="inner">
+    <table class="table">
+        <tr>
+            <th class="first">repository name</th>
+            <th class="last">Owner</th>
+        </tr>
+
 {% for repo in repos_list %}
-<li><a href="/hooks/repos/{{ repo.key }}/">{{ repo.name }}</a> (owner:
-<a href="/hooks/users/{{ repo.owner.key }}/">{{ repo.owner.name }}</a>)</li>
+        <tr class="{% cycle odd,even %}">
+            <td>
+                <a href="/hooks/repos/{{ repo.key }}/">{{ repo.name }}</a>
+            </td>
+            <td>
+                <a href="/hooks/users/{{ repo.owner.key }}/">{{ repo.owner.name }}</a>
+            </td>
+        </tr>
 {% endfor %}
-</ul>
+    </table>
+</div>
 
 {% endblock %}
