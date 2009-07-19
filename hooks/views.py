@@ -86,6 +86,11 @@ def repo_add(request):
     r, u = create_repository_and_owner(repo, owner_name, "None")
     return HttpResponseRedirect(reverse('hooks.views.repo', args=(r.key(),)))
 
+def repo_delete(request, repo):
+    r = Repository.get(db.Key(repo))
+    r.delete()
+    return HttpResponseRedirect(reverse('hooks.views.repos'))
+
 def repo(request, repo):
     r = Repository.get(db.Key(repo))
     updates = RepoUpdate.gql("WHERE repo = :1", r)

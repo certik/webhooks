@@ -32,4 +32,11 @@ A list of JSON updates that we received for this repository:
 {% endfor %}
 </p>
 
+<h3>Delete the repository</h3>
+Click the button to delete the repository. This is permanent (e.g. you have to
+add it back in at the <a href="/hooks/repos/">repositories list</a> page):
+<form action="/hooks/repos/delete/{{ repo.key }}/" method="post">
+<input type="submit" value="Delete" />
+</form>
+
 {% endblock %}
