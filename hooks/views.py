@@ -26,6 +26,23 @@ def get_github_queue():
         queue = taskqueue.Queue("github")
     return queue
 
+def create_repository_and_owner(repository, name, email=None):
+    q = User.gql("WHERE email = :1", email)
+    u = q.get()
+    if u is None:
+        u = User(name=name, email=email)
+        u.save()
+    q = Repository.gql("WHERE name = :1 AND owner = :2", repository, u)
+    r = q.get()
+    if r is None:
+        r = Repository(name=repository, owner=u)
+        r.save()
+    queue = get_github_queue()
+    task = taskqueue.Task(url="/hooks/worker/authors/",
+            params={'repo': r.key()})
+    queue.add(task)
+    return r, u
+
 def index(request):
     if request.method == 'GET':
         return render_to_response("hooks/index.html")
@@ -36,23 +53,10 @@ def index(request):
         #logging.info("-"*40 + "\n" + pprint.pformat(payload) + "\n" + "-"*40)
         repository = payload["repository"]
         owner = repository["owner"]
-        q = User.gql("WHERE email = :1", owner["email"])
-        u = q.get()
-        if u is None:
-            u = User(name=owner["name"], email=owner["email"])
-            u.save()
-        q = Repository.gql("WHERE name = :1 AND owner = :2",
-                repository["name"], u)
-        r = q.get()
-        if r is None:
-            r = Repository(name=repository["name"], owner=u)
-            r.save()
+        r, u = create_repository_and_owner(repository["name"],
+                owner["name"], owner["email"])
         u = RepoUpdate(repo=r, update=pprint.pformat(payload))
         u.save()
-        queue = get_github_queue()
-        task = taskqueue.Task(url="/hooks/worker/authors/",
-                params={'repo': r.key()})
-        queue.add(task)
         return HttpResponse("OK\n")
 
 def users(request):
