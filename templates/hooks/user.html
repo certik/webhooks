@@ -4,9 +4,12 @@
 
 {% block content %}
 
+<h2 class="title">User Profile</h2>
+<div class="inner">
 Name: {{ user.name }}<br/>
 Email: {{ user.email }}<br/>
 <img src="{{ gravatar_url }}">
+</div>
 
 
 {% endblock %}
