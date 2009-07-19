@@ -31,21 +31,6 @@ add it back in at the <a href="/hooks/repos/">repositories list</a> page):
   </div>
 </div>
 
-<div class="block">
-  <h3>Updates</h3>
-  <div class="content">
-        <p>
-        A list of JSON updates that we received for this repository:
-        {% for update in updates %}
-        <hr>
-        <pre>
-        {{ update.update }}
-        </pre>
-        {% endfor %}
-        </p>
-  </div>
-</div>
-
 {% endblock %}
 
 {% block content %}
@@ -79,5 +64,30 @@ List of all authors, that committed patches to this repository:
     </table>
 
 </div>
+</div>
+</div>
+
+<div class="block">
+          <div class="secondary-navigation">
+            <ul>
+              <li class="active first"><a href="">Updates</a></li>
+            </ul>
+            <div class="clear"></div>
+          </div>
+
+    <div class="content">
+  <h2 class="title">Updates</h2>
+  <div class="inner">
+        <p>
+        A list of JSON updates that we received for this repository:
+        {% for update in updates %}
+        <hr>
+        <pre>
+        {{ update.update }}
+        </pre>
+        {% endfor %}
+        </p>
+  </div>
+
 
 {% endblock %}
