@@ -80,12 +80,22 @@ List of all authors, that committed patches to this repository:
   <div class="inner">
         <p>
         A list of JSON updates that we received for this repository:
-        {% for update in updates %}
         <hr>
-        <pre>
-        {{ update.update }}
-        </pre>
+    <table class="table">
+        <tr>
+            <th class="first">JSON payload</th>
+        </tr>
+
+        {% for update in updates %}
+        <tr class="{% cycle odd,even %}">
+            <td>
+                <pre>
+                {{ update.update }}
+                </pre>
+            </td>
+        </tr>
         {% endfor %}
+    </table>
         </p>
   </div>
 
