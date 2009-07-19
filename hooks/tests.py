@@ -108,9 +108,9 @@ class HookTest(TestCase):
         assert response.status_code == 200
         users_list = response.context["users_list"]
         assert len(list(users_list)) == 1
-        assert users_list[0].name == "user4"
-        assert users_list[0].email == "some4@at.com"
-        key = users_list[0].key()
+        assert users_list[0]["name"] == "user4"
+        assert users_list[0]["email"] == "some4@at.com"
+        key = users_list[0]["key"]
         response = self.client.get('/hooks/users/%s/' % key)
         assert response.status_code == 200
         user = response.context["user"]
@@ -142,8 +142,8 @@ class HookTest(TestCase):
         assert response.status_code == 200
         users_list = response.context["users_list"]
         assert len(list(users_list)) == 1
-        assert users_list[0].name == "defunkt"
-        assert users_list[0].email == "chris@ozmm.org"
+        assert users_list[0]["name"] == "defunkt"
+        assert users_list[0]["email"] == "chris@ozmm.org"
 
     def test_users1(self):
         data = simplejson.dumps(d1)
@@ -160,10 +160,10 @@ class HookTest(TestCase):
         assert response.status_code == 200
         users_list = response.context["users_list"]
         assert len(list(users_list)) == 2
-        assert users_list[0].name == "user4"
-        assert users_list[0].email == "some4@at.com"
-        assert users_list[1].name == "defunkt"
-        assert users_list[1].email == "chris@ozmm.org"
+        assert users_list[0]["name"] == "user4"
+        assert users_list[0]["email"] == "some4@at.com"
+        assert users_list[1]["name"] == "defunkt"
+        assert users_list[1]["email"] == "chris@ozmm.org"
 
     def test_users2(self):
         data = simplejson.dumps(d1)
@@ -180,8 +180,8 @@ class HookTest(TestCase):
         assert response.status_code == 200
         users_list = response.context["users_list"]
         assert len(list(users_list)) == 1
-        assert users_list[0].name == "user4"
-        assert users_list[0].email == "some4@at.com"
+        assert users_list[0]["name"] == "user4"
+        assert users_list[0]["email"] == "some4@at.com"
 
     def test_users3(self):
         data = simplejson.dumps(d2)
@@ -198,8 +198,8 @@ class HookTest(TestCase):
         assert response.status_code == 200
         users_list = response.context["users_list"]
         assert len(list(users_list)) == 1
-        assert users_list[0].name == "defunkt"
-        assert users_list[0].email == "chris@ozmm.org"
+        assert users_list[0]["name"] == "defunkt"
+        assert users_list[0]["email"] == "chris@ozmm.org"
 
     def test_repos1(self):
         data = simplejson.dumps(d1)
