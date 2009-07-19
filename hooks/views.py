@@ -47,6 +47,13 @@ def create_repository_and_owner(repository, name, email):
     queue.add(task)
     return r, u
 
+def get_gravatar_url(email):
+    gravatar_id = hashlib.md5(email).hexdigest()
+    default = "http://github.com/images/gravatars/gravatar-40.png"
+    gravatar_url = "http://www.gravatar.com/avatar/%s?d=%s" % \
+            (gravatar_id, urllib.quote(default, safe=""))
+    return gravatar_url
+
 def index(request):
     if request.method == 'GET':
         return render_to_response("hooks/index.html")
@@ -65,16 +72,16 @@ def index(request):
 
 def users(request):
     l = User.objects.all()
-    return render_to_response("hooks/users.html", {'users_list': l})
+    a = []
+    for u in l:
+        a.append({"name": u.name, "email": u.email, "key": u.key(),
+            "gravatar_url": get_gravatar_url(u.email)})
+    return render_to_response("hooks/users.html", {'users_list': a})
 
 def user(request, user):
     u = User.get(db.Key(user))
-    gravatar_id = hashlib.md5(u.email).hexdigest()
-    default = "http://github.com/images/gravatars/gravatar-40.png"
-    gravatar_url = "http://www.gravatar.com/avatar/%s?d=%s" % \
-            (gravatar_id, urllib.quote(default, safe=""))
     return render_to_response("hooks/user.html", {'user': u,
-        'gravatar_url': gravatar_url})
+        'gravatar_url': get_gravatar_url(u.email)})
 
 def repos(request):
     l = Repository.objects.all()
@@ -97,14 +104,10 @@ def repo(request, repo):
     updates = RepoUpdate.gql("WHERE repo = :1", r)
     authors = Author.gql("WHERE repo = :1", r)
     a = []
-    default = "http://github.com/images/gravatars/gravatar-40.png"
     for author in authors:
         u = author.user
-        gravatar_id = hashlib.md5(u.email).hexdigest()
-        gravatar_url = "http://www.gravatar.com/avatar/%s?d=%s" % \
-                (gravatar_id, urllib.quote(default, safe=""))
         a.append({"name": u.name, "email": u.email, "key": u.key(),
-            "gravatar_url": gravatar_url})
+            "gravatar_url": get_gravatar_url(u.email)})
     return render_to_response("hooks/repo.html", {'repo': r,
         'repo_url': repo_url, 'updates': updates, 'authors': a})
 
