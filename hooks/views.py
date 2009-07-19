@@ -27,8 +27,11 @@ def get_github_queue():
         queue = taskqueue.Queue("github")
     return queue
 
-def create_repository_and_owner(repository, name, email=None):
-    q = User.gql("WHERE email = :1", email)
+def create_repository_and_owner(repository, name, email):
+    if email != "None":
+        q = User.gql("WHERE email = :1", email)
+    else:
+        q = User.gql("WHERE email = :1 AND name = :2", email, name)
     u = q.get()
     if u is None:
         u = User(name=name, email=email)
