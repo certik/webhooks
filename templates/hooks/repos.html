@@ -4,6 +4,15 @@
 
 {% block content %}
 
+<h3>Add a new repository</h3>
+<form action="/hooks/repos/add/" method="post">
+Repository:
+<input type="text" name="repo" value="sympy" />
+Owner:
+<input type="text" name="owner" value="certik" />
+<input type="submit" value="Add" />
+</form>
+
 <h2>Repositories</h2>
 <ul>
 {% for repo in repos_list %}
