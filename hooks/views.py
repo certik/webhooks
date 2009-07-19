@@ -17,6 +17,8 @@ from google.appengine.api.labs import taskqueue
 from utils import log_exception
 
 def get_github_queue():
+    # For some reason, the "github" queue doesn't work when testing, so we need
+    # to use the "default" queue for tests:
     if "WEBHOOKS_TESTS" in os.environ and \
             os.environ['WEBHOOKS_TESTS'] == "yes":
         queue = taskqueue.Queue("default")
