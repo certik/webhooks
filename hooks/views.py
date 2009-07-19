@@ -28,10 +28,10 @@ def get_github_queue():
     return queue
 
 def create_repository_and_owner(repository, name, email):
-    if email != "None":
-        q = User.gql("WHERE email = :1", email)
+    if email == "None":
+        q = User.gql("WHERE name = :1", name)
     else:
-        q = User.gql("WHERE email = :1 AND name = :2", email, name)
+        q = User.gql("WHERE email = :1", email)
     u = q.get()
     if u is None:
         u = User(name=name, email=email)
