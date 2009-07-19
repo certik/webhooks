@@ -93,6 +93,7 @@ def repo_delete(request, repo):
 
 def repo(request, repo):
     r = Repository.get(db.Key(repo))
+    repo_url = "http://github.com/%s/%s" % (r.owner.name, r.name)
     updates = RepoUpdate.gql("WHERE repo = :1", r)
     authors = Author.gql("WHERE repo = :1", r)
     a = []
@@ -105,7 +106,7 @@ def repo(request, repo):
         a.append({"name": u.name, "email": u.email, "key": u.key(),
             "gravatar_url": gravatar_url})
     return render_to_response("hooks/repo.html", {'repo': r,
-        'updates': updates, 'authors': a})
+        'repo_url': repo_url, 'updates': updates, 'authors': a})
 
 @log_exception
 def worker_authors(request):
