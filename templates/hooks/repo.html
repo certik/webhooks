@@ -2,43 +2,82 @@
 
 {% block title %}Repository{% endblock %}
 
-{% block content %}
+{% block sidebar %}
 
+<div class="block">
+  <h3>Repository Details</h3>
+  <div class="content">
+    <p>
 Name: {{ repo.name }}<br/>
 Owner: <a href="/hooks/users/{{ repo.owner.key }}/">{{ repo.owner.name }}</a>
 <br/>
 <em>{{ repo.name }}</em> repository at GitHub: <a href ="{{ repo_url }}">{{ repo_url }}</a>
+    </p>
+  </div>
+</div>
 
-<h2>Authors</h2>
-<p>
-List of all authors, that committed patches to this repository:
-<ul>
-{% for author in authors %}
-<li>
-<a href="/hooks/users/{{ author.key }}/">{{ author.name }}</a>
-({{ author.email }})
-<img src="{{ author.gravatar_url }}">
-</li>
-{% endfor %}
-</ul>
-</p>
-
-<h2>Updates</h2>
-<p>
-A list of JSON updates that we received for this repository:
-{% for update in updates %}
-<hr>
-<pre>
-{{ update.update }}
-</pre>
-{% endfor %}
-</p>
-
-<h3>Delete the repository</h3>
+<div class="block">
+  <h3>Delete the repository</h3>
+  <div class="content">
+    <p>
 Click the button to delete the repository. This is permanent (e.g. you have to
 add it back in at the <a href="/hooks/repos/">repositories list</a> page):
-<form action="/hooks/repos/delete/{{ repo.key }}/" method="post">
-<input type="submit" value="Delete" />
+<form action="/hooks/repos/delete/{{ repo.key }}/" method="post" class="form">
+<div class="group navform">
+<input type="submit" class="button" value="Delete &rarr;" />
+</div>
 </form>
+</p>
+  </div>
+</div>
+
+<div class="block">
+  <h3>Updates</h3>
+  <div class="content">
+        <p>
+        A list of JSON updates that we received for this repository:
+        {% for update in updates %}
+        <hr>
+        <pre>
+        {{ update.update }}
+        </pre>
+        {% endfor %}
+        </p>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block content %}
+
+<h2 class="title">{{ repo.name }} Repository</h2>
+<div class="inner">
+
+<h4>Authors</h4>
+<p>
+List of all authors, that committed patches to this repository:
+    <table class="table">
+        <tr>
+            <th class="first">Name</th>
+            <th>Email</th>
+            <th class="last">Gravatar</th>
+        </tr>
+
+{% for user in authors %}
+        <tr class="{% cycle odd,even %}">
+            <td>
+                <a href="{{ user.key }}">{{ user.name }}</a>
+            </td>
+            <td>
+                {{ user.email }}
+            </td>
+            <td>
+                <img src="{{ user.gravatar_url }}">
+            </td>
+        </tr>
+{% endfor %}
+    </table>
+
+</div>
 
 {% endblock %}
