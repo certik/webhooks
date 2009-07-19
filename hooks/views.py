@@ -56,7 +56,8 @@ def get_gravatar_url(email):
 
 def index(request):
     if request.method == 'GET':
-        return render_to_response("hooks/index.html")
+        return render_to_response("hooks/index.html",
+                {"main_active": "active"})
     elif request.method == 'POST':
         payload = request.POST["payload"]
         payload = urllib.unquote(payload)
@@ -76,7 +77,8 @@ def users(request):
     for u in l:
         a.append({"name": u.name, "email": u.email, "key": u.key(),
             "gravatar_url": get_gravatar_url(u.email)})
-    return render_to_response("hooks/users.html", {'users_list': a})
+    return render_to_response("hooks/users.html", {'users_list': a,
+        "users_active": "active"})
 
 def user(request, user):
     u = User.get(db.Key(user))
@@ -85,7 +87,8 @@ def user(request, user):
 
 def repos(request):
     l = Repository.objects.all()
-    return render_to_response("hooks/repos.html", {'repos_list': l})
+    return render_to_response("hooks/repos.html", {'repos_list': l,
+        "repos_active": "active"})
 
 def repo_add(request):
     repo = request.POST["repo"]
