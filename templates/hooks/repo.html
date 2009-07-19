@@ -51,7 +51,7 @@ List of all authors, that committed patches to this repository:
 {% for user in authors %}
         <tr class="{% cycle odd,even %}">
             <td>
-                <a href="{{ user.key }}">{{ user.name }}</a>
+                <a href="/hooks/users/{{ user.key }}/">{{ user.name }}</a>
             </td>
             <td>
                 {{ user.email }}
