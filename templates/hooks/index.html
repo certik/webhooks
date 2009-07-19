@@ -22,13 +22,20 @@ This application is opensource (BSD licensed), source code is at
 </p>
 
 <h1>How to add a repository and users</h1>
+<p>
 To add a new repository, set up a post-receive hook on your repository (use the
 url of this page) as explained in the
 <a href="http://github.com/guides/post-receive-hooks">Post-Receive Guide</a>
-at GitHub. This is important, so that we are kept updated about all changes to
-the repository.
+at GitHub. That's the best way, because we will be kept updated about all
+changes to the repository.
 
 Once we receive a hook, the corresponding repository and users will be
 automatically created.
+</p>
+<p>
+Another option is to create the repository manually on the
+<a href="/hooks/repos/">repositories list</a>
+page.
+</p>
 
 {% endblock %}
