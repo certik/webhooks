@@ -2,16 +2,34 @@
 
 {% block title %}Repositories{% endblock %}
 
-{% block content %}
+{% block sidebar %}
 
-<h3>Add a new repository</h3>
-<form action="/hooks/repos/add/" method="post">
-Repository:
-<input type="text" name="repo" value="sympy" />
-Owner:
-<input type="text" name="owner" value="certik" />
-<input type="submit" value="Add" />
+<div class="block">
+  <h3>Add a new repository</h3>
+  <div class="content">
+<br/>
+<form action="/hooks/repos/add/" method="post" class="form">
+<div class="group">
+    <label class="label">Repository</label>
+    <input type="text" name="repo" class="text_field" />
+    <span class="description">Ex: sympy</span>
+</div>
+<div class="group">
+    <label class="label">Owner</label>
+    <input type="text" name="owner" class="text_field" />
+    <span class="description">Ex: certik</span>
+</div>
+<div class="group navform">
+<input type="submit" class="button" value="Add &rarr;" />
+</div>
+
 </form>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block content %}
 
 <h2>Repositories</h2>
 <ul>
