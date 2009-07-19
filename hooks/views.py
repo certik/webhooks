@@ -5,9 +5,10 @@ import pprint
 import logging
 import hashlib
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.utils import simplejson
+from django.core.urlresolvers import reverse
 
 from models import User, Repository, RepoUpdate, Author
 from google.appengine.ext import db
@@ -75,6 +76,12 @@ def user(request, user):
 def repos(request):
     l = Repository.objects.all()
     return render_to_response("hooks/repos.html", {'repos_list': l})
+
+def repo_add(request):
+    repo = request.POST["repo"]
+    owner_name = request.POST["owner"]
+    r, u = create_repository_and_owner(repo, owner_name, "None")
+    return HttpResponseRedirect(reverse('hooks.views.repo', args=(r.key(),)))
 
 def repo(request, repo):
     r = Repository.get(db.Key(repo))
